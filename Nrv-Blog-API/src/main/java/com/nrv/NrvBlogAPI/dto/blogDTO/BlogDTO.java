@@ -1,4 +1,4 @@
-package com.nrv.NrvBlogAPI.dto;
+package com.nrv.NrvBlogAPI.dto.blogDTO;
 
 import com.nrv.NrvBlogAPI.entities.User;
 import lombok.AllArgsConstructor;

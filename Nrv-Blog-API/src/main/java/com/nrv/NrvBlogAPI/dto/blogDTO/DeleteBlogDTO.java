@@ -1,4 +1,4 @@
-package com.nrv.NrvBlogAPI.dto;
+package com.nrv.NrvBlogAPI.dto.blogDTO;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

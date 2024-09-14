@@ -1,5 +1,6 @@
 package com.nrv.NrvBlogAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,13 +18,25 @@ public class Blog {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "Blog_Id")
     private UUID blogId;
+
     @Column(name = "Blog_Title", nullable = false)
     private String blogTitle;
+
     @Column(name = "Blog_Content", nullable = false, columnDefinition = "TEXT")
     private String blogContent;
+
     @Column(name = "Blog_Creation_Time", nullable = false)
     private LocalDate blogCreationDate;
+
     @ManyToOne
     @JoinColumn(name = "User_Id", nullable = false)
+    @JsonManagedReference
     private User user;
+
+    public Blog(String blogTitle, String blogContent, LocalDate blogCreationDate, User user) {
+        this.blogTitle = blogTitle;
+        this.blogContent = blogContent;
+        this.blogCreationDate = blogCreationDate;
+        this.user = user;
+    }
 }
