@@ -23,7 +23,7 @@ public class BlogController {
 
     // GET: /api/v1/blog/{id}
     @GetMapping("/{id}")
-    ResponseEntity<BlogDTO> getBlog(@PathVariable @Valid UUID id) {
+    ResponseEntity<BlogDTO> getBlog(@PathVariable UUID id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(service.getBlog(id));

@@ -15,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -41,14 +43,14 @@ public class BlogServiceImpl implements BlogService {
     public BlogDTO getBlog(UUID blogId) {
         Blog blog = blogRepository.findByBlogIdWithUser(blogId)
                 .orElseThrow(() -> new ResourceNotFoundException("Blog with That Id Not Found"));
-        logger.trace(BlogLogMessages.BLOG_GET.getMessage(), blogId);
+        logger.info(BlogLogMessages.BLOG_GET.getMessage(), blogId);
         return mapper.map(blog, BlogDTO.class);
     }
 
     @Override
     public List<BlogDTO> getAllBlogs() {
         List<Blog> blogList = blogRepository.findAll();
-        logger.trace(BlogLogMessages.BLOG_GET_LIST.getMessage());
+        logger.info(BlogLogMessages.BLOG_GET_LIST.getMessage());
         return blogList
                 .stream()
                 .map(blog -> mapper.map(blog, BlogDTO.class))
@@ -68,15 +70,28 @@ public class BlogServiceImpl implements BlogService {
         );
         Blog savedBlog = blogRepository.save(newBlog);
         BlogDTO savedBlogDTO = mapper.map(savedBlog, BlogDTO.class);
-        logger.trace(BlogLogMessages.BLOG_CREATED.getMessage(), savedBlog.getBlogId());
+        logger.info(BlogLogMessages.BLOG_CREATED.getMessage(), savedBlog.getBlogId());
         return new BlogCreatedDTO("Blog created Successfully", savedBlogDTO);
     }
 
     //Admin Only
     @Override
     public DeleteBlogDTO deleteBlog(UUID blogId) {
-        blogRepository.deleteById(blogId);
-        logger.trace(BlogLogMessages.BLOG_DELETED.getMessage(), blogId);
-        return new DeleteBlogDTO("Blog Deleted Successfully", LocalDateTime.now());
+        // Get the currently authenticated user
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        Blog deleteBlog = blogRepository.findByBlogIdWithUser(blogId)
+                .orElseThrow(() -> new ResourceNotFoundException("Blog with this ID Not present"));
+        if (deleteBlog.getUser().getUserName().equals(currentUsername) || !isAdmin()) {
+            throw new RuntimeException("You are not authorized to delete this blog");
+        }
+        blogRepository.delete(deleteBlog);
+        logger.info(BlogLogMessages.BLOG_DELETED.getMessage(), blogId);
+        return new DeleteBlogDTO(blogId + " Deleted Successfully", LocalDateTime.now());
+    }
+
+    private boolean isAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
     }
 }

@@ -1,0 +1,73 @@
+package com.nrv.NrvBlogAPI.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
+@EnableWebSecurity
+@Configuration
+@EnableMethodSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private JWTRequestFilter jwtFilter;
+
+    @Autowired
+    private UserDetailsService userDetailService;
+
+    @Bean
+    public SecurityFilterChain authorizeRequests(HttpSecurity http/*, AuthenticationManager manager*/) throws Exception {
+        return http
+                .cors(withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // Public access
+                        .requestMatchers(HttpMethod.GET, "/api/v1/blog", "/api/v1/blog/**", "/api/v1/user/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/user/register", "/api/v1/user/login").permitAll()
+
+                        // Restricted access
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/user/**").hasAnyRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/user/**").hasRole("ADMIN")
+
+                        // Authentication required
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/blog/**").authenticated() // Allow only the person who has created blog or is Admin
+                        .requestMatchers(HttpMethod.POST, "/api/v1/blog/post").authenticated()
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                /*.authenticationManager(manager)*/
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setUserDetailsService(userDetailService);
+
+        return provider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+}
