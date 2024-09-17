@@ -45,9 +45,9 @@ public class SecurityConfig {
 
                         // Restricted access
                         .requestMatchers(HttpMethod.PUT, "/api/v1/user/**").hasAnyRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/user/**").hasRole("ADMIN")
 
                         // Authentication required
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/user/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/blog/**").authenticated() // Allow only the person who has created blog or is Admin
                         .requestMatchers(HttpMethod.POST, "/api/v1/blog/post").authenticated()
                         .anyRequest().authenticated())

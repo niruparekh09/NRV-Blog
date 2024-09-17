@@ -1,5 +1,6 @@
 package com.nrv.NrvBlogAPI.service;
 
+import com.nrv.NrvBlogAPI.custom_exception.AlreadyExistsException;
 import com.nrv.NrvBlogAPI.custom_exception.InvalidCredentialsException;
 import com.nrv.NrvBlogAPI.custom_exception.ResourceNotFoundException;
 import com.nrv.NrvBlogAPI.dto.APIResponse;
@@ -96,6 +97,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRegisteredDTO userRegister(RegisterUserDTO userRegistration) {
+        if (checkUserName(userRegistration.getUserId())) {
+            throw new AlreadyExistsException("UserId exists");
+        }
         User newUser = new User(
                 userRegistration.getUserId(),
                 userRegistration.getUserName(),
@@ -158,9 +162,11 @@ public class UserServiceImpl implements UserService {
         //Logic of Admin or User only
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         User deleteUser = userRepository.findById(userId)
-                .orElseThrow(()-> new ResourceNotFoundException("User with this ID not present"));
-        if(deleteUser.getUserId().equals(currentUsername) || !isAdmin()){
-            throw new RuntimeException("You are not authorized to delete this user");
+                .orElseThrow(() -> new ResourceNotFoundException("User with this ID not present"));
+        if (!deleteUser.getUserId().equals(currentUsername)) {
+            if (!isAdmin()) {
+                throw new RuntimeException("You are not authorized to delete this user");
+            }
         }
         userRepository.delete(deleteUser);
         logger.info(UserLogMessages.BLOG_DELETED.getMessage(), userId);
@@ -171,5 +177,13 @@ public class UserServiceImpl implements UserService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+    }
+
+
+    private boolean checkUserName(String newUserId) {
+        return userRepository
+                .findUserIdList()
+                .stream()
+                .anyMatch(userId -> userId.equals(newUserId));
     }
 }

@@ -15,4 +15,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.blogList")
     List<User> findAllWithBlogs();
+
+    @Query("SELECT u.userId FROM User u")
+    List<String> findUserIdList();
 }

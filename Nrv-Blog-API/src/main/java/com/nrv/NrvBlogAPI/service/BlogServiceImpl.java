@@ -1,5 +1,6 @@
 package com.nrv.NrvBlogAPI.service;
 
+import com.nrv.NrvBlogAPI.custom_exception.AlreadyExistsException;
 import com.nrv.NrvBlogAPI.custom_exception.ResourceNotFoundException;
 import com.nrv.NrvBlogAPI.dto.blogDTO.AddBlogDTO;
 import com.nrv.NrvBlogAPI.dto.blogDTO.BlogCreatedDTO;
@@ -59,6 +60,13 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogCreatedDTO addBlog(AddBlogDTO blog) {
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!blog.getUserId().equals(currentUsername)) {
+            throw new RuntimeException("You are not authorized to Add a blog in other's ID");
+        }
+        if (checkBlogTitle(blog.getBlogTitle())) {
+            throw new AlreadyExistsException("Blog with this title Already Exists");
+        }
         User user = userRepository
                 .findById(blog.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User with That Id Not Found"));
@@ -81,17 +89,28 @@ public class BlogServiceImpl implements BlogService {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Blog deleteBlog = blogRepository.findByBlogIdWithUser(blogId)
                 .orElseThrow(() -> new ResourceNotFoundException("Blog with this ID Not present"));
-        if (deleteBlog.getUser().getUserName().equals(currentUsername) || !isAdmin()) {
-            throw new RuntimeException("You are not authorized to delete this blog");
+        if (!deleteBlog.getUser().getUserId().equals(currentUsername)) {
+            if (!isAdmin()) {
+                throw new RuntimeException("You are not authorized to delete this blog");
+            }
         }
         blogRepository.delete(deleteBlog);
         logger.info(BlogLogMessages.BLOG_DELETED.getMessage(), blogId);
         return new DeleteBlogDTO(blogId + " Deleted Successfully", LocalDateTime.now());
     }
 
+    private boolean checkBlogTitle(String newTitle) {
+        return blogRepository
+                .findBlogTitleList()
+                .stream()
+                .anyMatch(title -> title.equals(newTitle));
+    }
+
     private boolean isAdmin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        logger.info("In isAdmin. Role: {}", auth);
         return auth.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
     }
+
 }

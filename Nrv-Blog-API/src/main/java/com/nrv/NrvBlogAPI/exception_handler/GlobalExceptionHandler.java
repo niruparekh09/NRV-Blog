@@ -1,5 +1,6 @@
 package com.nrv.NrvBlogAPI.exception_handler;
 
+import com.nrv.NrvBlogAPI.custom_exception.AlreadyExistsException;
 import com.nrv.NrvBlogAPI.custom_exception.InvalidCredentialsException;
 import com.nrv.NrvBlogAPI.custom_exception.ResourceNotFoundException;
 import com.nrv.NrvBlogAPI.dto.APIResponse;
@@ -37,6 +38,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleBadCredentials(InvalidCredentialsException ex) {
         logger.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new APIResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<?> handleAlreadyExists(AlreadyExistsException ex) {
+        logger.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new APIResponse(ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
