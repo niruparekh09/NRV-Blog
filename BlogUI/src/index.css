@@ -5,3 +5,74 @@
 *{
     background-color: #242535;
 }
+
+.custom-markdown {
+    @apply prose text-white mx-auto; /* Use prose styles and ensure text color and centering */
+  }
+
+/* Tailwind CSS Styles for Markdown */
+.markdown-body {
+    @apply bg-[#242535] text-white p-4 rounded-lg shadow-md; /* General styles */
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+    @apply text-white font-bold mb-2; /* Heading styles */
+}
+
+.markdown-body h1 {
+    @apply text-4xl border-b-2 border-gray-700 pb-2; /* Heading 1 styles */
+}
+
+.markdown-body h2 {
+    @apply text-3xl border-b-2 border-gray-700 pb-2; /* Heading 2 styles */
+}
+
+.markdown-body h3 {
+    @apply text-2xl border-b border-gray-600 pb-1; /* Heading 3 styles */
+}
+
+.markdown-body h4 {
+    @apply text-xl border-b border-gray-600 pb-1; /* Heading 4 styles */
+}
+
+.markdown-body h5 {
+    @apply text-lg border-b border-gray-600 pb-1; /* Heading 5 styles */
+}
+
+.markdown-body h6 {
+    @apply text-base border-b border-gray-600 pb-1; /* Heading 6 styles */
+}
+
+.markdown-body p {
+    @apply mb-4; /* Paragraph styles */
+}
+
+.markdown-body ul,
+.markdown-body ol {
+    @apply list-inside mb-4; /* List styles */
+}
+
+.markdown-body li {
+    @apply mb-2; /* List item styles */
+}
+
+.markdown-body img {
+    @apply max-w-full h-auto mb-4; /* Image styles */
+}
+
+.markdown-body code {
+    @apply bg-gray-700 text-yellow-300 px-1 py-0.5 rounded; /* Inline code styles */
+}
+
+.markdown-body pre {
+    @apply bg-gray-800 text-white p-4 rounded-lg overflow-x-auto; /* Code block styles */
+}
+
+.markdown-body blockquote {
+    @apply border-l-4 border-gray-600 pl-4 italic mb-4; /* Blockquote styles */
+}
