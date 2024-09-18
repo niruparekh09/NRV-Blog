@@ -10,28 +10,28 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="p-4">
+    <nav className="p-4 text-white">
       <div className=" mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className=" text-xl font-bold">
-          <Link to="/">NRV BLOG</Link>
+          <Link to="/"><img src="./NRV_BLOG.png" alt="Logo" width="140" /></Link>
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-8">
-          <Link to="/" className=" hover:text-gray-800">
+          <Link to="/" className=" hover:text-gray-300">
             Home
           </Link>
-          <Link to="/blog" className=" hover:text-gray-800">
+          <Link to="/blog" className=" hover:text-gray-300">
             Blog
           </Link>
-          <Link to="/contact" className=" hover:text-gray-800">
+          <Link to="/contact" className=" hover:text-gray-300">
             Contact
           </Link>
-          <Link to="/login" className=" hover:text-gray-800">
+          <Link to="/login" className=" hover:text-gray-300">
             Login
           </Link>
-          <Link to="/aboutme" className=" hover:text-gray-800">
+          <Link to="/aboutme" className=" hover:text-gray-300">
             About Me
           </Link>
         </div>
@@ -82,31 +82,31 @@ const Navbar = () => {
         <div className="flex flex-col space-y-2 mt-2">
           <Link
             to="/"
-            className=" hover:text-gray-800 block px-4 py-2"
+            className=" hover:text-gray-300 block px-4 py-2"
           >
             Home
           </Link>
           <Link
             to="/blog"
-            className=" hover:text-gray-800 block px-4 py-2"
+            className=" hover:text-gray-300 block px-4 py-2"
           >
             Blog
           </Link>
           <Link
             to="/contact"
-            className=" hover:text-gray-800 block px-4 py-2"
+            className=" hover:text-gray-300 block px-4 py-2"
           >
             Contact
           </Link>
           <Link
             to="/login"
-            className=" hover:text-gray-800 block px-4 py-2"
+            className=" hover:text-gray-300 block px-4 py-2"
           >
             Login
           </Link>
           <Link
             to="/aboutme"
-            className=" hover:text-gray-800 block px-4 py-2"
+            className=" hover:text-gray-300 block px-4 py-2"
           >
             About Me
           </Link>
