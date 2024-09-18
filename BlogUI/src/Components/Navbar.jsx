@@ -1,9 +1,13 @@
 // src/components/Navbar.js
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { userId } = useAuth();
+
+  //Get userId from context
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -14,7 +18,9 @@ const Navbar = () => {
       <div className=" mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className=" text-xl font-bold">
-          <Link to="/"><img src="./NRV_BLOG.png" alt="Logo" width="140" /></Link>
+          <Link to="/">
+            <img src="./NRV_BLOG.png" alt="Logo" width="140" />
+          </Link>
         </div>
 
         {/* Desktop Menu */}
@@ -22,15 +28,26 @@ const Navbar = () => {
           <Link to="/" className=" hover:text-gray-300">
             Home
           </Link>
-          <Link to="/blog" className=" hover:text-gray-300">
-            Blog
+          <Link
+            to="/addBlog"
+            className={`${
+              userId ? "" : "pointer-events-none text-gray-500"
+            } hover:text-gray-300`}
+          >
+            Add A Blog
           </Link>
           <Link to="/contact" className=" hover:text-gray-300">
             Contact
           </Link>
-          <Link to="/login" className=" hover:text-gray-300">
-            Login
-          </Link>
+          {!userId ? (
+            <Link to="/login" className=" hover:text-gray-300">
+              Login
+            </Link>
+          ) : (
+            <Link to="/user" className=" hover:text-gray-300">
+              {`@${userId}`}
+            </Link>
+          )}
           <Link to="/aboutme" className=" hover:text-gray-300">
             About Me
           </Link>
@@ -38,10 +55,7 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center">
-          <button
-            onClick={toggleMenu}
-            className=" focus:outline-none"
-          >
+          <button onClick={toggleMenu} className=" focus:outline-none">
             {isOpen ? (
               <svg
                 className="w-6 h-6"
@@ -80,34 +94,19 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div className={`md:hidden ${isOpen ? "block" : "hidden"}`}>
         <div className="flex flex-col space-y-2 mt-2">
-          <Link
-            to="/"
-            className=" hover:text-gray-300 block px-4 py-2"
-          >
+          <Link to="/" className=" hover:text-gray-300 block px-4 py-2">
             Home
           </Link>
-          <Link
-            to="/blog"
-            className=" hover:text-gray-300 block px-4 py-2"
-          >
+          <Link to="/blog" className=" hover:text-gray-300 block px-4 py-2">
             Blog
           </Link>
-          <Link
-            to="/contact"
-            className=" hover:text-gray-300 block px-4 py-2"
-          >
+          <Link to="/contact" className=" hover:text-gray-300 block px-4 py-2">
             Contact
           </Link>
-          <Link
-            to="/login"
-            className=" hover:text-gray-300 block px-4 py-2"
-          >
+          <Link to="/login" className=" hover:text-gray-300 block px-4 py-2">
             Login
           </Link>
-          <Link
-            to="/aboutme"
-            className=" hover:text-gray-300 block px-4 py-2"
-          >
+          <Link to="/aboutme" className=" hover:text-gray-300 block px-4 py-2">
             About Me
           </Link>
         </div>

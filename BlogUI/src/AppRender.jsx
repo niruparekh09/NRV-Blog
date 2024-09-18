@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { getAllBlogs } from './Hooks/useApi.js'; // Ensure this path is correct
-import ReactMarkdown from 'react-markdown'; // Correct import
+import React, { useState, useEffect } from "react";
+import { getAllBlogs } from "./Hooks/UseAPI"; // Ensure this path is correct
+import ReactMarkdown from "react-markdown"; // Correct import
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -13,7 +13,7 @@ const App = () => {
         const result = await getAllBlogs(); // Await the promise to get data
         setData(result); // Set state with the resolved data
       } catch (err) {
-        console.error('Failed to fetch blogs:', err.message); // Handle errors
+        console.error("Failed to fetch blogs:", err.message); // Handle errors
         setError(err.message); // Set error state
       } finally {
         setLoading(false); // Update loading state
@@ -36,7 +36,9 @@ const App = () => {
         ) : (
           data.map((blog) => (
             <div key={blog.blogId} className="blog-post mb-12">
-              <h2 className="text-5xl text-white font-mono text-center mb-4">{blog.blogTitle}</h2>
+              <h2 className="text-5xl text-white font-mono text-center mb-4">
+                {blog.blogTitle}
+              </h2>
               {/* Centering content */}
               <ReactMarkdown className=" markdown-body text-center">
                 {blog.blogContent}
