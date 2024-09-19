@@ -5,7 +5,7 @@ import { useAuth } from "../Context/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { userId } = useAuth();
+  const { userId,role } = useAuth();
 
   //Get userId from context
 
@@ -48,12 +48,17 @@ const Navbar = () => {
               {`@${userId}`}
             </Link>
           )}
+          {role === "ROLE_ADMIN" &&
+          <Link to="/admin" className=" hover:text-gray-300">
+            Admin Dashboard
+          </Link>
+          }
           <Link to="/aboutme" className=" hover:text-gray-300">
             About Me
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button
         <div className="md:hidden flex items-center">
           <button onClick={toggleMenu} className=" focus:outline-none">
             {isOpen ? (
@@ -88,10 +93,10 @@ const Navbar = () => {
               </svg>
             )}
           </button>
-        </div>
+        </div> */}
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu
       <div className={`md:hidden ${isOpen ? "block" : "hidden"}`}>
         <div className="flex flex-col space-y-2 mt-2">
           <Link to="/" className=" hover:text-gray-300 block px-4 py-2">
@@ -110,7 +115,7 @@ const Navbar = () => {
             About Me
           </Link>
         </div>
-      </div>
+      </div> */}
     </nav>
   );
 };

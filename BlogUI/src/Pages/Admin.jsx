@@ -1,13 +1,13 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
 
-
-const Home = () => {
+const Admin = () => {
   return (
     <div className="mx-40">
-      <Navbar/>
+      <Navbar />
+      Admin
     </div>
   );
 };
 
-export default Home;
+export default Admin;

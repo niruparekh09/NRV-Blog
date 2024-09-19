@@ -12,19 +12,23 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [role, setRole] = useState(null);
 
-  const login = (userId, token) => {
+  const login = (userId, token, role) => {
     setToken(token);
     setUserId(userId);
+    setRole(role);
   };
 
   const logout = () => {
     setToken(null);
     setUserId(null);
+    setRole(null);
+    console.log("Inside Logout");
   };
 
   return (
-    <AuthContext.Provider value={{ token, userId, login, logout }}>
+    <AuthContext.Provider value={{ token, userId, role, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
