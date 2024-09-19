@@ -74,6 +74,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginResponseDTO userLogin(LoginUserDTO user) {
         String jwtToken;
+        if(!checkUserName(user.getUserId())){
+            throw new ResourceNotFoundException("User With This UserId Not Found");
+        }
         try {
             Authentication principal = mgr
                     .authenticate(
@@ -92,7 +95,13 @@ public class UserServiceImpl implements UserService {
             logger.error("Authentication failed for user: {}", user.getUserId(), e);
             throw new InvalidCredentialsException("Invalid email or password.");
         }
-        return new LoginResponseDTO(user.getUserId(), jwtToken, "User Logged In Successfully");
+        String role = userRepository
+                .findById(user.getUserId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User with this Id not Found"))
+                .getRole()
+                .name();
+        return new LoginResponseDTO(user.getUserId(), jwtToken, "User Logged In Successfully", role);
     }
 
     @Override
@@ -175,8 +184,11 @@ public class UserServiceImpl implements UserService {
 
     private boolean isAdmin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+        return auth.getAuthorities()
+                .stream()
+                .anyMatch(grantedAuthority -> grantedAuthority
+                        .getAuthority()
+                        .equals("ROLE_ADMIN"));
     }
 
 
