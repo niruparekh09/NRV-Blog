@@ -67,6 +67,9 @@ public class BlogServiceImpl implements BlogService {
         if (checkBlogTitle(blog.getBlogTitle())) {
             throw new AlreadyExistsException("Blog with this title Already Exists");
         }
+        if(blog.getBlogTitle().isEmpty() || blog.getBlogContent().isEmpty()){
+            throw new RuntimeException("Title or Content Can Not Be Empty");
+        }
         User user = userRepository
                 .findById(blog.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User with That Id Not Found"));
