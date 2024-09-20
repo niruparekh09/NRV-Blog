@@ -1,8 +1,8 @@
-import axios from "axios";
-import { useAuth } from "../Context/AuthContext";
+import axios from 'axios';
+import { useAuth } from '../Context/AuthContext';
 
-const BASE_BLOG_URL = "http://localhost:8080/api/v1/blog";
-const BASE_USER_URL = "http://localhost:8080/api/v1/user";
+const BASE_BLOG_URL = 'http://localhost:8080/api/v1/blog';
+const BASE_USER_URL = 'http://localhost:8080/api/v1/user';
 
 const useAPI = () => {
   const { token, userId } = useAuth();
@@ -51,7 +51,7 @@ const useAPI = () => {
       setRegisterError(true);
 
       console.log(error);
-      const message = error.response?.data?.message || "Registration failed"; // Extracting the error message
+      const message = error.response?.data?.message || 'Registration failed'; // Extracting the error message
       setErrorMessage(message);
       throw error;
     }
@@ -81,7 +81,7 @@ const useAPI = () => {
       console.log(error);
       setUserUpdateError(true);
 
-      const message = error.response?.data?.message || "User Update failed"; // Extracting the error message
+      const message = error.response?.data?.message || 'User Update failed'; // Extracting the error message
       setUserUpdateErrorMessage(message);
     }
   };
@@ -98,12 +98,13 @@ const useAPI = () => {
 
       return reponse;
     } catch (error) {
-      console.log(error);
+      console.log(error.response?.data?.message);
 
-      return error.response?.data?.message || "User Deletion failed";
+      return error.response?.data?.message || 'User Deletion failed';
     }
   };
 
+  // Get All Blogs
   const getAllBlogs = async () => {
     try {
       const response = await axios.get(BASE_BLOG_URL);
@@ -114,7 +115,8 @@ const useAPI = () => {
     }
   };
 
-  const getABlogWithId = async (id) => {
+  // Get a Blog by ID
+  const getBlogById = async (id) => {
     try {
       const response = await axios.get(`${BASE_BLOG_URL}/${id}`);
       return response.data; // Return the specific blog data
@@ -124,6 +126,7 @@ const useAPI = () => {
     }
   };
 
+  // Add a Blog
   const addBlog = async (blogTitle, blogContent, setAddBlogError) => {
     try {
       const response = await axios.post(
@@ -140,11 +143,27 @@ const useAPI = () => {
         }
       );
       setAddBlogError(false);
-      return response;
+      return response.data;
     } catch (error) {
       console.error(error);
       setAddBlogError(true);
-      throw error;
+      return error.response?.data?.message || 'Blog Addition failed';
+    }
+  };
+
+  // Delete A Blog
+
+  const deleteBlog = async (blogId) => {
+    try {
+      const reponse = await axios.delete(`${BASE_BLOG_URL}/${blogId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return reponse;
+    } catch (error) {
+      console.log(error);
+      return error.response?.data?.message || 'Blog Deletion failed';
     }
   };
 
@@ -156,8 +175,9 @@ const useAPI = () => {
     userUpdate,
     deleteUser,
     getAllBlogs,
-    getABlogWithId,
+    getBlogById,
     addBlog,
+    deleteBlog,
   };
 };
 

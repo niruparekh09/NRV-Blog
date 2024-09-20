@@ -13,7 +13,7 @@
 
 /* Tailwind CSS Styles for Markdown */
 .markdown-body {
-  @apply bg-[#242535] text-white p-4 rounded-lg shadow-md; /* General styles */
+  @apply text-white p-4 rounded-lg shadow-md; /* General styles */
 }
 
 .markdown-body h1,
@@ -63,7 +63,7 @@
 }
 
 .markdown-body img {
-  @apply max-w-full h-auto mb-4; /* Image styles */
+  @apply max-w-full h-auto mb-4 m-auto; /* Image styles */
 }
 
 .markdown-body code {
@@ -76,4 +76,14 @@
 
 .markdown-body blockquote {
   @apply border-l-4 border-gray-600 pl-4 italic mb-4; /* Blockquote styles */
+}
+
+
+.loader {
+  border-style: solid;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

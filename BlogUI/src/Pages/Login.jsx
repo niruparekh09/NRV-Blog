@@ -54,7 +54,7 @@ const Login = () => {
   return (
     <div className="mx-40">
       <Navbar />
-      <div className="border-2 border-opacity-20 rounded-lg border-white p-10 flex flex-col justify-center mt-32 m-auto max-w-screen-sm">
+      <div className="border-2 border-opacity-20 rounded-lg border-white p-10 flex flex-col justify-center mt-20 m-auto max-w-screen-sm">
         {validationError && (
           <div className="text-red-600 border-2 border-red-600 flex justify-center w-96 m-auto bg-red-100 font-semibold rounded-lg mb-3 py-1">
             {validationError}

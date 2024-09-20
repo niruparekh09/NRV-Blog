@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import Navbar from './../Components/Navbar';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-import useAPI from '../Hooks/UseAPI';
-import { useAuth } from '../Context/AuthContext';
-import Popup from 'reactjs-popup';
-import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from "react";
+import Navbar from "./../Components/Navbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import useAPI from "../Hooks/UseAPI";
+import { useAuth } from "../Context/AuthContext";
+import Popup from "reactjs-popup";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 //import 'reactjs-popup/style.css';
 
 const User = () => {
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [passwordValidation, setPasswordValidation] = useState('');
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [passwordValidation, setPasswordValidation] = useState("");
   const [passwordDropDown, setPasswordDropDown] = useState(false);
   const [userUpdateError, setUserUpdateError] = useState(false);
-  const [userUpdateErrorMessage, setUserUpdateErrorMessage] = useState('');
+  const [userUpdateErrorMessage, setUserUpdateErrorMessage] = useState("");
   const navigate = useNavigate();
   const { userUpdate, deleteUser } = useAPI();
-  const { logout } = useAuth();
+  const { logout, role } = useAuth();
 
   function togglePasswordDropDown() {
     setPasswordDropDown(!passwordDropDown);
@@ -27,7 +27,7 @@ const User = () => {
   async function handlePasswordChange(e) {
     e.preventDefault();
     if (newPassword !== confirmNewPassword) {
-      setPasswordValidation('Passwords do not match');
+      setPasswordValidation("Passwords do not match");
     }
 
     //Sending PUT Request to server to register the user
@@ -38,25 +38,25 @@ const User = () => {
         setUserUpdateErrorMessage
       );
 
-      navigate('/login');
+      navigate("/login");
     } catch (error) {
-      console.error('Registration Failed', error);
-      setPasswordValidation('');
+      console.error("Registration Failed", error);
+      setPasswordValidation("");
     }
   }
 
   function handleLogin() {
     logout();
-    navigate('/');
+    navigate("/");
   }
 
   async function handleDeleteUser() {
     try {
       await deleteUser();
       logout(); // To remove all the information from context
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      console.error('Deletion Failed ' + error);
+      console.error("Deletion Failed " + error);
     }
   }
 
@@ -65,7 +65,7 @@ const User = () => {
       <Navbar />
       <div
         className={`border-2 border-opacity-20 ${
-          passwordDropDown ? 'rounded-t-lg' : 'rounded-lg'
+          passwordDropDown ? "rounded-t-lg" : "rounded-lg"
         } border-white p-5 flex justify-between mt-32 m-auto max-w-screen-sm`}
       >
         <h2 className="text-lg font-semibold">Change Password</h2>
@@ -73,14 +73,14 @@ const User = () => {
           <FontAwesomeIcon
             icon={faAngleDown}
             className={`transition-transform duration-300 ease-in-out ${
-              passwordDropDown ? 'rotate-180' : ''
+              passwordDropDown ? "rotate-180" : ""
             }`}
           />
         </button>
       </div>
       <div
         className={`overflow-hidden transition-all duration-300 ease-in-out border border-opacity-5 bg-white bg-opacity-5 rounded-b-lg border-white p-5 m-auto max-w-screen-sm ${
-          passwordDropDown ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+          passwordDropDown ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         {passwordDropDown && (
@@ -129,7 +129,7 @@ const User = () => {
         )}
       </div>
       <div className="border-2 border-opacity-20 rounded-lg border-white p-5 flex justify-between mt-5 m-auto max-w-screen-sm">
-        <span>
+        <span className={role === "ROLE_ADMIN" && "m-auto"}>
           Logout The User
           <button
             className="ml-3 px-10 rounded-lg border py-1 bg-gray-800 font-bold text-purple-600 border-none text-lg"
@@ -138,52 +138,54 @@ const User = () => {
             Logout
           </button>
         </span>
-        <span>
-          Delete the user
-          <Popup
-            trigger={
-              <button className="ml-3 px-10 rounded-lg border py-1 bg-gray-800 font-bold text-red-500 border-none text-lg">
-                Delete user
-              </button>
-            }
-            modal
-            nested
-            overlayStyle={{
-              background: 'rgba(0, 0, 0, 0.5)',
-              backdropFilter: 'blur(5px)',
-            }} // Add blur effect
-          >
-            {(close) => (
-              <div className="flex items-center justify-center h-full">
-                <div className="modal rounded-lg shadow-lg p-4 w-[300px]">
-                  <button
-                    className="close cursor-pointer absolute block p-1 leading-5 right-[-10px] top-[-10px] text-[24px] rounded-full bg-none"
-                    onClick={close}
-                  >
-                    <FontAwesomeIcon icon={faCircleXmark} />
-                  </button>
-                  <div className="header w-full border-b border-gray-400 text-[18px] text-center p-[5px]">
-                    Confirm Deletion
-                  </div>
-                  <div className="content w-full p-[10px] px-[5px] text-center">
-                    Are you sure you want to delete your account?
-                  </div>
-                  <div className="actions w-full p-[10px] px-[5px] text-center">
+        {role !== "ROLE_ADMIN" && (
+          <span>
+            Delete the user
+            <Popup
+              trigger={
+                <button className="ml-3 px-10 rounded-lg border py-1 bg-gray-800 font-bold text-red-500 border-none text-lg">
+                  Delete user
+                </button>
+              }
+              modal
+              nested
+              overlayStyle={{
+                background: "rgba(0, 0, 0, 0.5)",
+                backdropFilter: "blur(5px)",
+              }} // Add blur effect
+            >
+              {(close) => (
+                <div className="flex items-center justify-center h-full">
+                  <div className="modal rounded-lg shadow-lg p-4 w-[300px]">
                     <button
-                      className="button mr-2 text-red-500"
-                      onClick={handleDeleteUser}
+                      className="close cursor-pointer absolute block p-1 leading-5 right-[-10px] top-[-10px] text-[24px] rounded-full bg-none"
+                      onClick={close}
                     >
-                      Yes, delete
+                      <FontAwesomeIcon icon={faCircleXmark} />
                     </button>
-                    <button className="button" onClick={close}>
-                      Cancel
-                    </button>
+                    <div className="header w-full border-b border-gray-400 text-[18px] text-center p-[5px]">
+                      Confirm Deletion
+                    </div>
+                    <div className="content w-full p-[10px] px-[5px] text-center">
+                      Are you sure you want to delete your account?
+                    </div>
+                    <div className="actions w-full p-[10px] px-[5px] text-center">
+                      <button
+                        className="button mr-2 text-red-500"
+                        onClick={handleDeleteUser}
+                      >
+                        Yes, delete
+                      </button>
+                      <button className="button" onClick={close}>
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </Popup>
-        </span>
+              )}
+            </Popup>
+          </span>
+        )}
       </div>
     </div>
   );

@@ -9,6 +9,9 @@ import User from "./Pages/User";
 import { AuthProvider } from "./Context/AuthContext";
 import Admin from "./Pages/Admin";
 import NotFound from "./Pages/NotFound";
+import UnAuthorized from "./Pages/UnAuthorized";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import Blog from "./Pages/Blog";
 
 const App = () => {
   return (
@@ -16,14 +19,25 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/addBlog" element={<AddABlog />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/aboutme" element={<Aboutme />} />
           <Route path="/register" element={<Register />} />
-
+          <Route path="/blog/:blogId" element={<Blog />} />
+          <Route path="/not-authorized" element={<UnAuthorized />} />
           <Route path="*" element={<NotFound />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/addBlog"
+            element={<ProtectedRoute element={<AddABlog />} />}
+          />
+          <Route path="/user" element={<ProtectedRoute element={<User />} />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute element={<Admin />} requiredRole="ROLE_ADMIN" />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

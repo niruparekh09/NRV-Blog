@@ -19,7 +19,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className=" text-xl font-bold">
           <Link to="/">
-            <img src="./NRV_BLOG.png" alt="Logo" width="140" />
+            <img src="../public/NRV_BLOG.png" alt="Logo" width="140" />
           </Link>
         </div>
 
@@ -35,9 +35,6 @@ const Navbar = () => {
             } hover:text-gray-300`}
           >
             Add A Blog
-          </Link>
-          <Link to="/contact" className=" hover:text-gray-300">
-            Contact
           </Link>
           {!userId ? (
             <Link to="/login" className=" hover:text-gray-300">
