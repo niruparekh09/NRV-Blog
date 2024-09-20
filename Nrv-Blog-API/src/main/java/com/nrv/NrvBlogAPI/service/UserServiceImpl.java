@@ -1,5 +1,6 @@
 package com.nrv.NrvBlogAPI.service;
 
+import com.nrv.NrvBlogAPI.custom_exception.AccessDeniedException;
 import com.nrv.NrvBlogAPI.custom_exception.AlreadyExistsException;
 import com.nrv.NrvBlogAPI.custom_exception.InvalidCredentialsException;
 import com.nrv.NrvBlogAPI.custom_exception.ResourceNotFoundException;
@@ -172,6 +173,9 @@ public class UserServiceImpl implements UserService {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         User deleteUser = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with this ID not present"));
+        if(deleteUser.getRole().name().equals("ROLE_ADMIN")){
+            throw new AccessDeniedException("You can't delete Admin");
+        }
         if (!deleteUser.getUserId().equals(currentUsername)) {
             if (!isAdmin()) {
                 throw new RuntimeException("You are not authorized to delete this user");
