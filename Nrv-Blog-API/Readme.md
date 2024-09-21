@@ -1,8 +1,3 @@
-# Read Me First
-The following was discovered as part of building this project:
-
-* The original package name 'com.nrv.Nrv-Blog-API' is invalid and this project uses 'com.nrv.Nrv_Blog_API' instead.
-
 # Getting Started
 
 ### Reference Documentation
