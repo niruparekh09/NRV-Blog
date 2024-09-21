@@ -1,17 +1,18 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./Pages/Home";
-import Aboutme from "./Pages/Aboutme";
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
-import AddABlog from "./Pages/AddABlog";
-import User from "./Pages/User";
-import { AuthProvider } from "./Context/AuthContext";
-import Admin from "./Pages/Admin";
-import NotFound from "./Pages/NotFound";
-import UnAuthorized from "./Pages/UnAuthorized";
-import ProtectedRoute from "./Components/ProtectedRoute";
-import Blog from "./Pages/Blog";
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './Pages/Home';
+import Aboutme from './Pages/Aboutme';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
+import AddABlog from './Pages/AddABlog';
+import User from './Pages/User';
+import { AuthProvider } from './Context/AuthContext';
+import Admin from './Pages/Admin';
+import NotFound from './Pages/NotFound';
+import UnAuthorized from './Pages/UnAuthorized';
+import ProtectedRoute from './Components/ProtectedRoute';
+import Blog from './Pages/Blog';
+import UserInfo from './Pages/UserInfo';
 
 const App = () => {
   return (
@@ -36,6 +37,15 @@ const App = () => {
             path="/admin"
             element={
               <ProtectedRoute element={<Admin />} requiredRole="ROLE_ADMIN" />
+            }
+          />
+          <Route
+            path="/user/:userId"
+            element={
+              <ProtectedRoute
+                element={<UserInfo />}
+                requiredRole="ROLE_ADMIN"
+              />
             }
           />
         </Routes>

@@ -41,7 +41,7 @@ const Aboutme = () => {
         />
       </div>
       <div className="flex flex-col justify-center mt-8">
-        <h1 className="text-3xl m-auto">Connect With Me</h1>
+        <h1 className="text-3xl m-auto font-light">Connect With Me</h1>
         <div className="flex justify-between mt-8 m-auto max-w-screen-md w-[768px]">
           <div>
             <a

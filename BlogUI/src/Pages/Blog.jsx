@@ -13,7 +13,7 @@ const Blog = () => {
   const { blogId } = useParams(); // To fetch blogId from url /blog/:blogId
   const [blog, setBlog] = useState();
   const { getBlogById,deleteBlog } = useAPI();
-  const {userId} = useAuth();
+  const {userId,role} = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const Blog = () => {
         <h3 className="text-3xl text-white font-mono text-center mt-4">
           Author: {blog.user.userName}
         </h3>
-        {userId === blog.user.userId && (
+        {(userId === blog.user.userId) || (role === "ROLE_ADMIN")  && (
           <div className="flex m-auto justify-center mt-10">
             <Popup
               trigger={
@@ -77,7 +77,7 @@ const Blog = () => {
               overlayStyle={{
                 background: "rgba(0, 0, 0, 0.5)",
                 backdropFilter: "blur(5px)",
-              }} // Add blur effect
+              }}
             >
               {(close) => (
                 <div className="flex items-center justify-center h-full">

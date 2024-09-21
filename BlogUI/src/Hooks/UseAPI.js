@@ -57,6 +57,34 @@ const useAPI = () => {
     }
   };
 
+  // Get All Users
+  const getUsers = async (setError) => {
+    try {
+      const response = await axios.get(BASE_USER_URL);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      setError(error.response?.data?.message || error.message); // Check if setError exists
+      return error.response?.data?.message || 'User List Fetching Failed';
+    }
+  };
+
+  // Get A User By Id
+  const getUserById = async (userId, setError) => {
+    try {
+      const response = await axios.get(`${BASE_USER_URL}/${userId}`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      setError(
+        error.reponse?.data?.message || `User with ${userId} not Fetched`
+      );
+      return error.reponse?.data?.message || `User with ${userId} not Fetched`;
+    }
+  };
+
   // User Update (only password)
   const userUpdate = async (
     newPassword,
@@ -105,13 +133,14 @@ const useAPI = () => {
   };
 
   // Get All Blogs
-  const getAllBlogs = async () => {
+  const getAllBlogs = async (setError) => {
     try {
       const response = await axios.get(BASE_BLOG_URL);
       return response.data; // Return the blog data
     } catch (err) {
       console.error(err);
-      throw err; // Re-throw for handling in the component
+      setError(err.response?.data?.message || err.message);
+      return err.response?.data?.message || err.message; // Re-throw for handling in the component
     }
   };
 
@@ -172,6 +201,8 @@ const useAPI = () => {
   return {
     login,
     register,
+    getUsers,
+    getUserById,
     userUpdate,
     deleteUser,
     getAllBlogs,
