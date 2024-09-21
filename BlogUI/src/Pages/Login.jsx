@@ -34,14 +34,6 @@ const Login = () => {
     // Sending Post request to server to login the user with id & password
     try {
       const [token,role] = await login(userId, password, setLoginError);
-
-      //Adding userId,token,role in Local Storage 
-      //Encrypting all 3 things
-
-      //----
-
-      //Retrieving userId,token,role and decrytping it 
-      //and adding it in context everytime application is re-rendered
       authLogin(userId, token,role);
 
       navigate("/"); // After successfull login, user is redirected to Home
