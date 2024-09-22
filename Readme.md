@@ -18,6 +18,8 @@ cd Nrv-Blog-API
 mvn clean install
 mvn spring-boot:run
 ```
+**You need to add a user with ROLE_ADMIN in your database in the table named blog once you run the spring boot aplication**
+### You can modify the database configuration from `application.properties` file inside your Application
 ## 3. You can also import postman file
 ### `Nrv-Blog-API.postman_collection.json`
 
