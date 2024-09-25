@@ -64,7 +64,7 @@ const Blog = () => {
         <h3 className="text-3xl text-white font-mono text-center mt-4">
           Author: {blog.user.userName}
         </h3>
-        {(userId === blog.user.userId) || (role === "ROLE_ADMIN")  && (
+        {((userId === blog.user.userId) || (role === "ROLE_ADMIN"))  && (
           <div className="flex m-auto justify-center mt-10">
             <Popup
               trigger={
