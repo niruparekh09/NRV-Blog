@@ -5,6 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * DTO class to get information of new blog from client side.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

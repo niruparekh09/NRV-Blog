@@ -1,5 +1,11 @@
 package com.nrv.NrvBlogAPI.log;
 
+/**
+ * Enum class for user log messages.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 public enum UserLogMessages {
     USER_GET("Get User with ID: {}"),
     USER_LOGIN("User Logged In With ID: {}"),

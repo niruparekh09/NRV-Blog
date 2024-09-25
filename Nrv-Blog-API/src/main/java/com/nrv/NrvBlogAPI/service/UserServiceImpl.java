@@ -29,6 +29,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Service class for User. Here are all the Business logic is present for various user function.
+ *
+ * @author Nirav Parekh
+ * @see UserService
+ * @since 1.0
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {

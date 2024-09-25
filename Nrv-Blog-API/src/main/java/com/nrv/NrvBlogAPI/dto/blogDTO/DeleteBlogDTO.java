@@ -5,6 +5,13 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+
+/**
+ * DTO class to provide client side a response about deleted blog.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 @Data
 @NoArgsConstructor
 public class DeleteBlogDTO {

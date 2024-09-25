@@ -5,6 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO class to get existing userId and updated password of a user from client side.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -12,6 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Entity class for User.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 @Entity
 @Data
 @NoArgsConstructor

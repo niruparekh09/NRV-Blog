@@ -12,42 +12,27 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class handles key management, token creation, user detail extraction,
+ * and authority management, facilitating secure authentication and authorization using JWTs.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 @Component
 @Slf4j
 public class JwtUtils {
-
-    //private String jwtSecret = "";
 
     @Value("${EXP_TIMEOUT}")
     private int jwtExpirationTimeout;
 
     private Key key;
-
-/*    public JwtUtils() {
-        try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey sk = keyGen.generateKey();
-            jwtSecret = Base64.getEncoder().encodeToString(sk.getEncoded());
-            System.out.println(jwtSecret);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @PostConstruct
-    public void init() {
-        key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
-    }*/
 
     @PostConstruct
     public void init() {
@@ -56,7 +41,7 @@ public class JwtUtils {
     }
 
     public String generateJwtToken(Authentication authentication) {
-        log.info("Generating jwt token " + authentication);
+        log.info("Generating jwt token {}", authentication);
         CustomUserDetails userPrincipal = (CustomUserDetails) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))

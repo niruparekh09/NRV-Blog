@@ -1,17 +1,18 @@
 package com.nrv.NrvBlogAPI.dto.userDTO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nrv.NrvBlogAPI.entities.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * DTO class to provide information of the newly registered user to client side.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

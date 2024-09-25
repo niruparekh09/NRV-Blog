@@ -12,6 +12,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DTO class to provide User Information to client side.
+ *
+ * @author Nirav Parekh
+ * @see UserBlogDTO
+ * @since 1.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -9,6 +9,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Custom user details Implementation service class which
+ * retrieve user-specific details based on the provided username.
+ * Authentication Provider delegates to this class for this purpose.
+ *
+ * @author Nirav Parekh
+ * @see SecurityConfig
+ * @see org.springframework.security.authentication.AuthenticationProvider
+ * @since 1.0
+ */
 @Service
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
 

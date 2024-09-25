@@ -1,13 +1,16 @@
 package com.nrv.NrvBlogAPI.dto.userDTO;
 
-import com.nrv.NrvBlogAPI.entities.Role;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
+/**
+ * DTO class to get information of a new user from client side.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 @Data
 @NoArgsConstructor
 public class RegisterUserDTO {

@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Entity class for Blog.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 @Entity
 @Data
 @NoArgsConstructor

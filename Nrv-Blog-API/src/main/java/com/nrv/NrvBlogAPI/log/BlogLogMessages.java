@@ -1,5 +1,11 @@
 package com.nrv.NrvBlogAPI.log;
 
+/**
+ * Enum class for blog log messages.
+ *
+ * @author Nirav Parekh
+ * @since 1.0
+ */
 public enum BlogLogMessages {
     BLOG_CREATED("Blog Created with ID: {}"),
     BLOG_GET("Get Blog with ID: {}"),

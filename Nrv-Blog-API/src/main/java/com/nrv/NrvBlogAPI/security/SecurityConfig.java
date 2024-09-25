@@ -21,6 +21,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+/**
+ * This class is responsible to configure security of our whole server.
+ *
+ * @author Nirav Parekh
+ * @see CustomUserDetailsServiceImpl
+ * @see JWTRequestFilter
+ * @see JwtUtils
+ * @since 1.0
+ */
 @EnableWebSecurity
 @Configuration
 @EnableMethodSecurity
@@ -30,10 +39,19 @@ public class SecurityConfig {
     private JWTRequestFilter jwtFilter;
 
     @Autowired
-    private UserDetailsService userDetailService;
+    private UserDetailsService userDetailsService;
 
+    /**
+     * This method creates a SecurityFilterChain, which is a series of filters that handle
+     * security-related concerns for incoming HTTP requests.
+     *
+     * @param http HttpSecurity object
+     * @return http object added with filter
+     * @author Nirav Parekh
+     * @since 1.0
+     */
     @Bean
-    public SecurityFilterChain authorizeRequests(HttpSecurity http/*, AuthenticationManager manager*/) throws Exception {
+    public SecurityFilterChain authorizeRequests(HttpSecurity http) throws Exception {
         return http
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
@@ -52,19 +70,37 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/blog/post").authenticated()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
-                /*.authenticationManager(manager)*/
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
+    /**
+     * This method configures AuthenticationProvider. We have configured it with as
+     * DaoAuthenticationProvider as provider, Bcrypt as password encoder and
+     * our userDetailService {@link CustomUserDetailsServiceImpl}
+     *
+     * @return provider
+     * @author Nirav Parekh
+     * @see BCryptPasswordEncoder
+     * @see CustomUserDetailsServiceImpl
+     * @see DaoAuthenticationProvider
+     * @since 1.0
+     */
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
-        provider.setUserDetailsService(userDetailService);
+        provider.setUserDetailsService(userDetailsService);
 
         return provider;
     }
 
+    /**
+     * This method creates and configures an AuthenticationManager
+     *
+     * @param config Auth Config
+     * @author Nirav Parekh
+     * @since 1.0
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

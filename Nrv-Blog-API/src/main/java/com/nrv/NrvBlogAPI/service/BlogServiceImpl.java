@@ -25,6 +25,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Service class for Blog. Here are all the Business logic is present for various blog function.
+ *
+ * @author Nirav Parekh
+ * @see BlogService
+ * @since 1.0
+ */
 @Service
 @Transactional
 public class BlogServiceImpl implements BlogService {
